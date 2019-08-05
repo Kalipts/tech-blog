@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='保存文章',active='publish'">
 <header th:replace="admin/header::headerFragment(${title},${active})"></header>
-<link th:href="@{/admin/plugins/tagsinput/jquery.tagsinput.css}" rel="stylesheet"/>
-<link th:href="@{/admin/plugins/select2.dist.css/select2-bootstrap.css}" rel="stylesheet"/>
-<link th:href="@{/admin/plugins/toggles/toggles.css}" rel="stylesheet"/>
+<link th:href="@{/admin-assets/plugins/tagsinput/jquery.tagsinput.css}" rel="stylesheet"/>
+<link th:href="@{/admin-assets/plugins/select2.dist.css/select2-bootstrap.css}" rel="stylesheet"/>
+<link th:href="@{/admin-assets/plugins/toggles/toggles.css}" rel="stylesheet"/>
 
 <link href="//cdn.bootcss.com/multi-select/0.9.12/css/multi-select.css" rel="stylesheet"/>
 <link href="//cdn.bootcss.com/select2/3.4.8/select2.min.css" rel="stylesheet"/>
-<link th:href="@{/admin/plugins/md/css/style.css}" rel="stylesheet"/>
+<link th:href="@{/admin-assets/plugins/md/css/style.css}" rel="stylesheet"/>
 <style>
     #tags_tagsinput {
         background-color: #fafafa;
@@ -32,10 +32,10 @@
                     <div class="col-sm-12">
                         <h4 class="page-title">
                             <th:block th:if="${null != contents}">
-                                编辑文章
+                                Chỉnh sửa bài viết
                             </th:block>
                             <th:block th:unless="${null != contents}">
-                                发布文章
+                                Đăng bài viết
                             </th:block>
                         </h4>
                     </div>
@@ -50,24 +50,24 @@
                             <input type="hidden" name="content" id="content-editor"/>
 
                             <div class="form-group col-md-6" style="padding: 0 10px 0 0;">
-                                <input type="text" class="form-control" placeholder="请输入文章标题（必须）" name="title" required="required"
+                                <input type="text" class="form-control" placeholder="Title" name="title" required="required"
                                        aria-required="true" th:value="${contents!=null and contents.title!=null }?${contents.title}: ''"/>
                             </div>
 
                             <div class="form-group col-md-6" style="padding: 0 0 0 10px;">
-                                <input type="text" class="form-control" placeholder="自定义访问路径，如：my-first-article  默认为文章id" name="slug"
+                                <input type="text" class="form-control" placeholder="Slug" name="slug"
                                        th:value="${contents!=null and contents.slug !=null}?${contents.slug}: ''"/>
                             </div>
 
                             <div class="form-group col-md-6" style="padding: 0 10px 0 0;">
-                                <input name="tags" id="tags" type="text" class="form-control" placeholder="请填写文章标签"
+                                <input name="tags" id="tags" type="text" class="form-control" placeholder="Tag"
                                        th:value="${contents!=null and contents.tags !=null}?${contents.tags}: ''"/>
                             </div>
 
                             <div class="form-group col-md-6">
-                                <select id="multiple-sel" class="select2 form-control" multiple="multiple" data-placeholder="请选择分类...">
+                                <select id="multiple-sel" class="select2 form-control" multiple="multiple" data-placeholder="Topics">
                                     <th:block th:if="${null == categories}">
-                                        <option value="默认分类" selected="selected">默认分类</option>
+                                        <option value="Default" selected="selected">Default</option>
                                     </th:block>
                                     <th:block th:unless="${null == categories}">
                                         <th:block th:each="c : ${categories}">
@@ -81,39 +81,15 @@
                                 <textarea style="height: 450px" autocomplete="off" id="text" name="text" class="markdown-textarea" th:utext="${contents!=null and contents.content !=null}?${contents.content}: ''"></textarea>
                             </div>
 
-                            <div class="form-group col-md-3 col-sm-4">
-                                <label class="col-sm-4">开启评论</label>
-                                <div class="col-sm-8">
-                                    <div th:class="${contents!=null and contents.allowComment!=null }?'toggle toggle-success allow-'+${contents.allowComment}:'toggle toggle-success allow-true'"
-                                         onclick="allowComment(this);"></div>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-md-3 col-sm-4">
-                                <label class="col-sm-4">允许Ping</label>
-                                <div class="col-sm-8">
-                                    <div th:class="${contents!=null and contents.allowPing !=null}?'toggle toggle-success allow-'+${contents.allowPing}:'toggle toggle-success allow-true'"
-                                         onclick="allowPing(this);"></div>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-md-3 col-sm-4">
-                                <label class="col-sm-4">允许订阅</label>
-                                <div class="col-sm-8">
-                                    <div th:class="${contents!=null and  contents.allowFeed !=null}?'toggle toggle-success allow-'+${contents.allowFeed}: 'toggle toggle-success allow-true'"
-                                         onclick="allowFeed(this);"></div>
-                                </div>
-                            </div>
-
                             <div class="clearfix"></div>
 
                             <div class="text-right">
-                                <a class="btn btn-default waves-effect waves-light" th:href="@{/admin/article}">返回列表</a>
+
                                 <button type="button" class="btn btn-primary waves-effect waves-light" onclick="subArticle('publish');">
-                                    保存文章
+                                    Publish
                                 </button>
                                 <button type="button" class="btn btn-warning waves-effect waves-light" onclick="subArticle('draft');">
-                                    存为草稿
+                                    Save Draft
                                 </button>
                             </div>
                         </form>
@@ -126,18 +102,18 @@
 </div>
 <div th:replace="admin/footer :: footer"></div>
 
-<script th:src="@{/admin/plugins/tagsinput/jquery.tagsinput.min.js}"></script>
+<script th:src="@{/admin-assets/plugins/tagsinput/jquery.tagsinput.min.js}"></script>
 <script th:src="@{/admin/plugins/jquery-multi-select/jquery.quicksearch.js}"></script>
 
-<script th:src="@{/admin/plugins/md/js/jquery.scrollto.js}"></script>
-<script th:src="@{/admin/plugins/md/js/pagedown.js}"></script>
-<script th:src="@{/admin/plugins/md/js/pagedown-extra.js}"></script>
-<script th:src="@{/admin/plugins/md/js/diff.js}"></script>
-<script th:src="@{/admin/plugins/md/js/md.js}"></script>
+<script th:src="@{/admin-assets/plugins/md/js/jquery.scrollto.js}"></script>
+<script th:src="@{/admin-assets/plugins/md/js/pagedown.js}"></script>
+<script th:src="@{/admin-assets/plugins/md/js/pagedown-extra.js}"></script>
+<script th:src="@{/admin-assets/plugins/md/js/diff.js}"></script>
+<script th:src="@{/admin-assets/plugins/md/js/md.js}"></script>
 
 <script th:src="@{//cdn.bootcss.com/multi-select/0.9.12/js/jquery.multi-select.min.js}"></script>
 <script th:src="@{//cdn.bootcss.com/select2/3.4.8/select2.min.js}"></script>
 <script th:src="@{//cdn.bootcss.com/jquery-toggles/2.0.4/toggles.min.js}"></script>
-<script th:src="@{/admin/js/article.js}"></script>
+<script th:src="@{/admin-assets/js/article.js}"></script>
 </body>
 </html>

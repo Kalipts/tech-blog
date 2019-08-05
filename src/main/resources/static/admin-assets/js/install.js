@@ -1,12 +1,10 @@
-/**
- * Created by 13 on 2017/2/23.
- */
+
 !function ($) {
     "use strict";
     var tale = new $.tale();
     var FormWizard = function () {
     };
-    //creates form with validation
+
     FormWizard.prototype.init = function () {
         var $form_container = $("#wizard-validation-form");
         $form_container.validate({
@@ -19,11 +17,11 @@
             bodyTag: "section",
             transitionEffect: "fade",
             labels: {
-                previous: "上一步",
-                next: "下一步",
-                finish: "登录后台",
-                loading: '加载中...',
-                current: '当前位置'
+                previous: "Previous",
+                next: "Next",
+                finish: "Finish",
+                loading: 'Loading...',
+                current: 'current position'
             },
             onStepChanging: function (event, currentIndex, newIndex) {
                 tale.showLoading();
@@ -74,11 +72,11 @@
             onFinishing: function (event, currentIndex) {
                 $form_container.validate().settings.ignore = ":disabled";
                 var isValid = $form_container.valid();
-                window.location.href = "/admin/login";
+                window.location.href = "/admin-assets/login";
                 return isValid;
             },
             onFinished: function (event, currentIndex) {
-                window.location.href = "/admin/login";
+                window.location.href = "/admin-assets/login";
             }
         });
         return $form_container;

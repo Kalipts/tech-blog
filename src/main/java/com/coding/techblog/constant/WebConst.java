@@ -11,8 +11,6 @@ import java.util.Set;
 @Component
 public class WebConst {
 
-    public static final String INSTALL_FILE_CONF = "install.lock";
-
     public static Map<String, String> initConfig = new HashMap<>();
 
 

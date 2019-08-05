@@ -41,7 +41,7 @@ public class CommentServiceImpl implements ICommentService {
         if (StringUtils.isBlank(comments.getAuthor())) {
             comments.setAuthor("Anonymous");
         }
-        if (StringUtils.isNotBlank(comments.getMail()) && !TaleUtils.isEmail(comments.getMail())) {
+        if (StringUtils.isNotBlank(comments.getMail()) && TaleUtils.isEmail(comments.getMail())) {
             throw new TipException("Vui lòng nhập đống định dạng email ");
         }
         if (StringUtils.isBlank(comments.getContent())) {
@@ -125,6 +125,14 @@ public class CommentServiceImpl implements ICommentService {
     public CommentVo getCommentById(Integer coid) {
         if (null != coid) {
             return commentDao.selectByPrimaryKey(coid);
+        }
+        return null;
+    }
+
+    @Override
+    public List<CommentVo> getAllComment(Integer coid) {
+        if(null != coid) {
+            return commentDao.selectAllById(coid);
         }
         return null;
     }

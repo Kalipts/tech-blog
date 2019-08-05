@@ -76,7 +76,7 @@
                                 <div class="panel-body">
                                     <div th:if="${comments}== null and ${#lists.size(comments)}==0">
                                         <div class="alert alert-warning">
-                                            还没有收到留言.
+                                            Chưa có comments nào.
                                         </div>
                                     </div>
                                     <ul class="list-group"
@@ -87,23 +87,9 @@
                                                    th:text="${comment.author}"></a>
                                             </div>
                                             <th:block th:unless="${comment.url}!=null and ${comment.url}!=''" th:text="${comment.author}"/>
-                                            于<th:block th:text="${commons.fmtdate(comment.created,'MM-dd-HH:mm')}"/>：<a
+                                            <th:block th:text="${commons.fmtdate(comment.created,'MM-dd-HH:mm')}"/>：<a
                                                 th:href="${commons.site_url('/article/')}+${comment.cid}+'#comments'"
                                                 target="_blank" th:utext="${commons.article(comment.content)}"></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">Log</h4>
-                                </div>
-                                <div class="panel-body">
-                                    <ul class="list-group" >
-                                        <li class="list-group-item" th:each="log : ${logs}">
-                                            <span th:text="${commons.fmtdate(log.created, 'yyyy-MM-dd HH:mm:ss')} +' => '+ ${log.action}"></span>
                                         </li>
                                     </ul>
                                 </div>

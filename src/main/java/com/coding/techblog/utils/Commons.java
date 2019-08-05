@@ -15,10 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +48,7 @@ public final class Commons {
 
 
     public static String site_login() {
-        return "admin/login";
+        return "admin-assets/login";
     }
 
 
@@ -117,7 +114,7 @@ public final class Commons {
 
 
     public static String random(int max, String str) {
-        return UUID.random(1, max) + str;
+        return new Random().nextInt(max-1+1) + 1 + str;
     }
 
 
@@ -220,11 +217,7 @@ public final class Commons {
         return categries(WebConst.MAX_POSTS);
     }
 
-    /**
-     * 获取标签列表
-     *
-     * @return
-     */
+
     public static List<MetaDto> tags(int limit) {
         return siteService.metas(Types.TAG.getType(), null, limit);
     }
@@ -241,6 +234,13 @@ public final class Commons {
             return "<a href=\"#comment-" + coid + "\">@" + comments.getAuthor() + "</a>";
         }
         return "";
+    }
+
+    private static final String[] ICONS = {"bg-ico-book", "bg-ico-game", "bg-ico-note", "bg-ico-chat", "bg-ico-code", "bg-ico-image", "bg-ico-web", "bg-ico-link", "bg-ico-design", "bg-ico-lock"};
+
+
+    public static String show_icon(int cid) {
+        return ICONS[cid % ICONS.length];
     }
 
 
@@ -268,22 +268,6 @@ public final class Commons {
         return "";
     }
 
-    private static final String[] ICONS = {"bg-ico-book", "bg-ico-game", "bg-ico-note", "bg-ico-chat", "bg-ico-code", "bg-ico-image", "bg-ico-web", "bg-ico-link", "bg-ico-design", "bg-ico-lock"};
 
-
-    public static String show_icon(int cid) {
-        return ICONS[cid % ICONS.length];
-    }
-
-
-    public static Map<String, String> social() {
-        final String prefix = "social_";
-        Map<String, String> map = new HashMap<>();
-        map.put("weibo", WebConst.initConfig.get(prefix + "weibo"));
-        map.put("zhihu", WebConst.initConfig.get(prefix + "zhihu"));
-        map.put("github", WebConst.initConfig.get(prefix + "github"));
-        map.put("twitter", WebConst.initConfig.get(prefix + "twitter"));
-        return map;
-    }
 
 }

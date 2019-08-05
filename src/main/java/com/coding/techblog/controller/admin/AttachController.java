@@ -3,14 +3,12 @@ package com.coding.techblog.controller.admin;
 
 import com.coding.techblog.constant.WebConst;
 import com.coding.techblog.controller.BaseController;
-import com.coding.techblog.dto.LogActions;
 import com.coding.techblog.dto.Types;
 import com.coding.techblog.exception.TipException;
 import com.coding.techblog.modal.Bo.RestResponseBo;
 import com.coding.techblog.modal.Vo.AttachVo;
 import com.coding.techblog.modal.Vo.UserVo;
 import com.coding.techblog.service.IAttachService;
-import com.coding.techblog.service.ILogService;
 import com.coding.techblog.utils.Commons;
 import com.coding.techblog.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
@@ -42,8 +40,7 @@ public class AttachController extends BaseController {
     @Resource
     private IAttachService attachService;
 
-    @Resource
-    private ILogService logService;
+
 
 
     @GetMapping(value = "")
@@ -97,7 +94,6 @@ public class AttachController extends BaseController {
             if (null == attach) return RestResponseBo.fail("Tệp đính kèm không tồn tại ");
             attachService.deleteById(id);
             new File(CLASSPATH+attach.getFkey()).delete();
-            logService.insertLog(LogActions.DEL_ARTICLE.getAction(), attach.getFkey(), request.getRemoteAddr(), this.getUid(request));
         } catch (Exception e) {
             String msg = "Xóa tệp đính kèm không thành công ";
             if (e instanceof TipException) msg = e.getMessage();

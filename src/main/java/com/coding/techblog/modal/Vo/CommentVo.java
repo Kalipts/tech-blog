@@ -158,4 +158,24 @@ public class CommentVo implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "CommentVo{" +
+                "coid=" + coid +
+                ", cid=" + cid +
+                ", created=" + created +
+                ", author='" + author + '\'' +
+                ", authorId=" + authorId +
+                ", ownerId=" + ownerId +
+                ", mail='" + mail + '\'' +
+                ", url='" + url + '\'' +
+                ", ip='" + ip + '\'' +
+                ", agent='" + agent + '\'' +
+                ", type='" + type + '\'' +
+                ", status='" + status + '\'' +
+                ", parent=" + parent +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

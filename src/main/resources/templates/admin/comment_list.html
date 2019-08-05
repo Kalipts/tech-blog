@@ -9,19 +9,19 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="page-title">评论管理</h4>
+                        <h4 class="page-title">Comment Management</h4>
                     </div>
                     <div class="col-md-12">
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th>评论内容</th>
-                                <th>评论人</th>
-                                <th>评论时间</th>
-                                <th>评论人邮箱</th>
-                                <th>评论人网址</th>
-                                <th>评论状态</th>
-                                <th>操作</th>
+                                <th>Conetnt</th>
+                                <th>Author</th>
+                                <th>Date</th>
+                                <th>Email</th>
+                                <th>Url</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -38,10 +38,10 @@
                                     </td>
                                     <td>
                                         <th:block th:if="${comment.status == 'approved'}">
-                                            <span class="label label-success">审核通过</span>
+                                            <span class="label label-success">Allow</span>
                                         </th:block>
                                         <th:block th:if="${comment.status == 'not_audit'}">
-                                            <span class="label label-default">未审核</span>
+                                            <span class="label label-default">Not Allow</span>
                                         </th:block>
                                     </td>
                                     <td>
@@ -49,11 +49,11 @@
                                             <a href="javascript:void(0)"
                                                th:onclick="'updateStatus('+${comment.coid}+', approved);'"
                                                class="btn btn-danger btn-sm waves-effect waves-light m-b-5"><i
-                                                    class="fa fa-trash-o"></i> <span>通过</span></a>
+                                                    class="fa fa-trash-o"></i> <span>Delete</span></a>
                                         </th:block>
                                         <a href="javascript:void(0)" th:onclick="'delComment('+${comment.coid}+');'"
                                            class="btn btn-danger btn-sm waves-effect waves-light m-b-5"><i
-                                                class="fa fa-trash-o"></i> <span>删除</span></a>
+                                                class="fa fa-trash-o"></i> <span>Delete</span></a>
                                     </td>
                                 </tr>
                             </th:block>
@@ -74,16 +74,16 @@
 
     function delComment(coid) {
         tale.alertConfirm({
-            title: '确定删除该评论吗?',
+            title: 'Are you sure?',
             then: function () {
                 tale.post({
                     url: '/admin/comments/delete',
                     data: {coid: coid},
                     success: function (result) {
                         if (result && result.success) {
-                            tale.alertOkAndReload('评论删除成功');
+                            tale.alertOkAndReload('Success');
                         } else {
-                            tale.alertError(result.msg || '评论删除失败');
+                            tale.alertError(result.msg || 'Fail');
                         }
                     }
                 });
@@ -97,9 +97,9 @@
             data: {coid: coid, status: status},
             success: function (result) {
                 if (result && result.success) {
-                    tale.alertOkAndReload('评论状态设置成功');
+                    tale.alertOkAndReload('Success');
                 } else {
-                    tale.alertError(result.msg || '评论设置失败');
+                    tale.alertError(result.msg || 'Fail');
                 }
             }
         });

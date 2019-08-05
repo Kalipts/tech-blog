@@ -2,11 +2,9 @@ package com.coding.techblog.controller.admin;
 
 import com.coding.techblog.constant.WebConst;
 import com.coding.techblog.controller.BaseController;
-import com.coding.techblog.dto.LogActions;
 import com.coding.techblog.exception.TipException;
 import com.coding.techblog.modal.Bo.RestResponseBo;
 import com.coding.techblog.modal.Vo.UserVo;
-import com.coding.techblog.service.ILogService;
 import com.coding.techblog.service.IUserService;
 import com.coding.techblog.utils.Commons;
 import com.coding.techblog.utils.TaleUtils;
@@ -34,12 +32,10 @@ public class AuthController extends BaseController {
     @Resource
     private IUserService usersService;
 
-    @Resource
-    private ILogService logService;
+
 
     @GetMapping(value = "/login")
     public String login() {
-        System.out.println("xin chao");
         return "admin/login";
     }
 
@@ -53,20 +49,14 @@ public class AuthController extends BaseController {
                                   HttpServletResponse response) {
 
 
-        Integer error_count = cache.get("login_error_count");
         try {
             UserVo user = usersService.login(username, password);
             request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
             if (StringUtils.isNotBlank(remeber_me)) {
                 TaleUtils.setCookie(response, user.getUid());
             }
-            logService.insertLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), user.getUid());
         } catch (Exception e) {
-            error_count = null == error_count ? 1 : error_count + 1;
-            if (error_count > 3) {
-                return RestResponseBo.fail("Bạn đã nhập mật khẩu sai hơn 3 lần, vui lòng nhập lại sau 10 phút ");
-            }
-            cache.set("login_error_count", error_count, 10 * 60);
+
             String msg = "Đăng nhập thất bại";
             if (e instanceof TipException) {
                 msg = e.getMessage();

@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by 13 on 2017/2/26.
- */
+
 @Controller
 @RequestMapping("admin/comments")
 public class CommentController extends BaseController {
@@ -33,13 +31,6 @@ public class CommentController extends BaseController {
     @Resource
     private ICommentService commentsService;
 
-    /**
-     * 评论列表
-     * @param page
-     * @param limit
-     * @param request
-     * @return
-     */
     @GetMapping(value = "")
     public String index(@RequestParam(value = "page", defaultValue = "1") int page,
                         @RequestParam(value = "limit", defaultValue = "15") int limit, HttpServletRequest request) {

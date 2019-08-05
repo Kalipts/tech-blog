@@ -19,13 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class BaseInterceptor implements HandlerInterceptor {
-    private static final Logger LOGGE = LoggerFactory.getLogger(BaseInterceptor.class);
-    private static final String USER_AGENT = "user-agent";
+
 
     @Resource
     private IUserService userService;
 
-    private MapCache cache = MapCache.single();
 
     @Resource
     private Commons commons;
@@ -39,8 +37,6 @@ public class BaseInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         String uri = request.getRequestURI();
 
-
-
         UserVo user = TaleUtils.getLoginUser(request);
         if (null == user) {
             Integer uid = TaleUtils.getCookieUid(request);
@@ -49,15 +45,9 @@ public class BaseInterceptor implements HandlerInterceptor {
                 request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
             }
         }
-        if (uri.startsWith("/admin") && !uri.startsWith("/admin/login") && null == user) {
+        if (uri.startsWith("/admin/") && !uri.startsWith("/admin/login") && null == user) {
             response.sendRedirect(request.getContextPath() + "/admin/login");
             return false;
-        }
-        if (request.getMethod().equals("GET")) {
-            String csrf_token = UUID.UU64();
-
-            cache.hset(Types.CSRF_TOKEN.getType(), csrf_token, uri, 30 * 60);
-            request.setAttribute("_csrf_token", csrf_token);
         }
         return true;
     }

@@ -2,7 +2,6 @@ package com.coding.techblog.controller.admin;
 
 
 import com.coding.techblog.controller.BaseController;
-import com.coding.techblog.dto.LogActions;
 import com.coding.techblog.dto.Types;
 import com.coding.techblog.exception.TipException;
 import com.coding.techblog.modal.Bo.RestResponseBo;
@@ -11,7 +10,6 @@ import com.coding.techblog.modal.Vo.ContentVoExample;
 import com.coding.techblog.modal.Vo.MetaVo;
 import com.coding.techblog.modal.Vo.UserVo;
 import com.coding.techblog.service.IContentService;
-import com.coding.techblog.service.ILogService;
 import com.coding.techblog.service.IMetaService;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -38,8 +36,7 @@ public class ArticleController extends BaseController {
     @Resource
     private IMetaService metasService;
 
-    @Resource
-    private ILogService logService;
+
 
 
     @GetMapping(value = "")
@@ -128,7 +125,6 @@ public class ArticleController extends BaseController {
     public RestResponseBo delete(@RequestParam int cid, HttpServletRequest request) {
         try {
             contentsService.deleteByCid(cid);
-            logService.insertLog(LogActions.DEL_ARTICLE.getAction(), cid+"", request.getRemoteAddr(), this.getUid(request));
         } catch (Exception e) {
             String msg = "Xóa không thành công";
             if (e instanceof TipException) {

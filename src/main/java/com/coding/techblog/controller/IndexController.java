@@ -1,11 +1,9 @@
 package com.coding.techblog.controller;
 
 import com.coding.techblog.constant.WebConst;
-import com.coding.techblog.dto.ErrorCode;
 import com.coding.techblog.dto.MetaDto;
 import com.coding.techblog.dto.Types;
 import com.coding.techblog.exception.TipException;
-import com.coding.techblog.modal.Bo.ArchiveBo;
 import com.coding.techblog.modal.Bo.CommentBo;
 import com.coding.techblog.modal.Bo.RestResponseBo;
 import com.coding.techblog.modal.Vo.CommentVo;
@@ -14,12 +12,10 @@ import com.coding.techblog.modal.Vo.MetaVo;
 import com.coding.techblog.service.ICommentService;
 import com.coding.techblog.service.IContentService;
 import com.coding.techblog.service.IMetaService;
-import com.coding.techblog.service.ISiteService;
-import com.coding.techblog.utils.IPKit;
 import com.coding.techblog.utils.PatternKit;
 import com.coding.techblog.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
-import com.vdurmont.emoji.EmojiParser;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,8 +45,6 @@ public class IndexController extends BaseController {
     @Resource
     private IMetaService metaService;
 
-    @Resource
-    private ISiteService siteService;
 
 
 
@@ -89,7 +83,6 @@ public class IndexController extends BaseController {
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
         completeArticle(request, contents);
-        updateArticleHit(contents.getCid(), contents.getHits());
         return this.render("post");
     }
 
@@ -103,21 +96,13 @@ public class IndexController extends BaseController {
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
         completeArticle(request, contents);
-        updateArticleHit(contents.getCid(), contents.getHits());
         return "themes/default/post";
     }
 
 
     private void completeArticle(HttpServletRequest request, ContentVo contents) {
-        if (contents.getAllowComment()) {
-            String cp = request.getParameter("cp");
-            if (StringUtils.isBlank(cp)) {
-                cp = "1";
-            }
-            request.setAttribute("cp", cp);
-            PageInfo<CommentBo> commentsPaginator = commentService.getComments(contents.getCid(), Integer.parseInt(cp), 6);
-            request.setAttribute("comments", commentsPaginator);
-        }
+                List<CommentVo> comments = commentService.getAllComment(contents.getCid());
+                request.setAttribute("comments", comments);
     }
 
 
@@ -135,16 +120,6 @@ public class IndexController extends BaseController {
                                   @RequestParam String author, @RequestParam String mail,
                                   @RequestParam String url, @RequestParam String text, @RequestParam String _csrf_token) {
 
-        String ref = request.getHeader("Referer");
-        if (StringUtils.isBlank(ref) || StringUtils.isBlank(_csrf_token)) {
-            return RestResponseBo.fail(ErrorCode.BAD_REQUEST);
-        }
-
-        String token = cache.hget(Types.CSRF_TOKEN.getType(), _csrf_token);
-        if (StringUtils.isBlank(token)) {
-            return RestResponseBo.fail(ErrorCode.BAD_REQUEST);
-        }
-
         if (null == cid || StringUtils.isBlank(text)) {
             return RestResponseBo.fail("Vui lòng nhập bình luận đầy đủ");
         }
@@ -153,7 +128,7 @@ public class IndexController extends BaseController {
             return RestResponseBo.fail("Tên quá dài");
         }
 
-        if (StringUtils.isNotBlank(mail) && !TaleUtils.isEmail(mail)) {
+        if (StringUtils.isNotBlank(mail) && TaleUtils.isEmail(mail)) {
             return RestResponseBo.fail("Vui lòng nhập đúng định dạng email");
         }
 
@@ -165,17 +140,7 @@ public class IndexController extends BaseController {
             return RestResponseBo.fail("Vui lòng nhập bình luận trong 200 kí tự ");
         }
 
-        String val = IPKit.getIpAddrByRequest(request) + ":" + cid;
-        Integer count = cache.hget(Types.COMMENTS_FREQUENCY.getType(), val);
-        if (null != count && count > 0) {
-            return RestResponseBo.fail("Bạn đang bình luận quá nhanh!");
-        }
 
-        author = TaleUtils.cleanXSS(author);
-        text = TaleUtils.cleanXSS(text);
-
-        author = EmojiParser.parseToAliases(author);
-        text = EmojiParser.parseToAliases(text);
 
         CommentVo comments = new CommentVo();
         comments.setAuthor(author);
@@ -192,7 +157,6 @@ public class IndexController extends BaseController {
             if (StringUtils.isNotBlank(url)) {
                 cookie("tale_remember_url", URLEncoder.encode(url, "UTF-8"), 7 * 24 * 60 * 60, response);
             }
-            cache.hset(Types.COMMENTS_FREQUENCY.getType(), val, 1, 60);
             return RestResponseBo.ok();
         } catch (Exception e) {
             String msg = "Bình luận thất bại ";
@@ -233,20 +197,8 @@ public class IndexController extends BaseController {
 
 
 
-    @GetMapping(value = "archives")
-    public String archives(HttpServletRequest request) {
-        List<ArchiveBo> archives = siteService.getArchives();
-        request.setAttribute("archives", archives);
-        return "themes/default/archives";
-    }
 
 
-    @GetMapping(value = "links")
-    public String links(HttpServletRequest request) {
-        List<MetaVo> links = metaService.getMetas(Types.LINK.getType());
-        request.setAttribute("links", links);
-        return this.render("links");
-    }
 
 
     @GetMapping(value = "/{pagename}")
@@ -255,16 +207,7 @@ public class IndexController extends BaseController {
         if (null == contents) {
             return this.render_404();
         }
-        if (contents.getAllowComment()) {
-            String cp = request.getParameter("cp");
-            if (StringUtils.isBlank(cp)) {
-                cp = "1";
-            }
-            PageInfo<CommentBo> commentsPaginator = commentService.getComments(contents.getCid(), Integer.parseInt(cp), 6);
-            request.setAttribute("comments", commentsPaginator);
-        }
         request.setAttribute("article", contents);
-        updateArticleHit(contents.getCid(), contents.getHits());
         return this.render("page");
     }
 
@@ -285,23 +228,7 @@ public class IndexController extends BaseController {
         return this.render("page-category");
     }
 
-    @Transactional(rollbackFor = TipException.class)
-    void updateArticleHit(Integer cid, Integer chits) {
-        Integer hits = cache.hget("article", "hits");
-        if (chits == null) {
-            chits = 0;
-        }
-        hits = null == hits ? 1 : hits + 1;
-        if (hits >= WebConst.HIT_EXCEED) {
-            ContentVo temp = new ContentVo();
-            temp.setCid(cid);
-            temp.setHits(chits + hits);
-            contentService.updateContentByCid(temp);
-            cache.hset("article", "hits", 1);
-        } else {
-            cache.hset("article", "hits", hits);
-        }
-    }
+
 
 
     @GetMapping(value = "tag/{name}")

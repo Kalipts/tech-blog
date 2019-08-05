@@ -1,43 +1,43 @@
 function markdown(textarea, toolbar, preview) {
     var options = {};
     options.strings = {
-        bold: '加粗 <strong> Ctrl+B',
-        boldexample: '加粗文字',
+        bold: 'Bold <strong> Ctrl+B',
+        boldexample: 'Bold text',
 
-        italic: '斜体 <em> Ctrl+I',
-        italicexample: '斜体文字',
+        italic: 'Italics <em> Ctrl+I',
+        italicexample: 'Italics text',
 
-        link: '链接 <a> Ctrl+L',
-        linkdescription: '请输入链接描述',
+        link: 'Link <a> Ctrl+L',
+        linkdescription: 'Enter link',
 
-        quote:  '引用 <blockquote> Ctrl+Q',
-        quoteexample: '引用文字',
+        quote:  'Blockquote <blockquote> Ctrl+Q',
+        quoteexample: 'Blockquote',
 
-        code: '代码 <pre><code> Ctrl+K',
-        codeexample: '请输入代码',
+        code: 'Code <pre><code> Ctrl+K',
+        codeexample: 'Code',
 
-        image: '图片 <img> Ctrl+G',
-        imagedescription: '请输入图片描述',
+        image: 'Image <img> Ctrl+G',
+        imagedescription: 'Image',
 
-        olist: '数字列表 <ol> Ctrl+O',
-        ulist: '普通列表 <ul> Ctrl+U',
-        litem: '列表项目',
+        olist: 'oList <ol> Ctrl+O',
+        ulist: 'uList <ul> Ctrl+U',
+        litem: 'List',
 
-        heading: '标题 <h1>/<h2> Ctrl+H',
-        headingexample: '标题文字',
+        heading: 'Heading <h1>/<h2> Ctrl+H',
+        headingexample: 'Heading',
 
-        hr: '分割线 <hr> Ctrl+R',
-        more: '摘要分割线 <!--more--> Ctrl+M',
+        hr: 'Hr <hr> Ctrl+R',
+        more: 'More Ctrl+M',
 
-        undo: '撤销 - Ctrl+Z',
-        redo: '重做 - Ctrl+Y',
-        redomac: '重做 - Ctrl+Shift+Z',
+        undo: 'Undo - Ctrl+Z',
+        redo: 'Redo - Ctrl+Y',
+        redomac: 'Redomac - Ctrl+Shift+Z',
 
-        imagedialog: '<p><b>插入图片</b></p><p>请在下方的输入框内输入要插入的远程图片地址</p>',
-        linkdialog: '<p><b>插入链接</b></p><p>请在下方的输入框内输入要插入的链接地址</p>',
+        imagedialog: '<p><b>Insert picture</b></p><p>Enter link</p>',
+        linkdialog: '<p><b>Insert Link</b></p><p>Enter link</p>',
 
-        ok: '确定',
-        cancel: '取消'
+        ok: 'Ok',
+        cancel: 'Cancel'
     };
 
     var converter = new Markdown.Converter(),
@@ -46,14 +46,14 @@ function markdown(textarea, toolbar, preview) {
         mark = '@mark' + Math.ceil(Math.random() * 100000000) + '@',
         span = '<span class="diff" />';
 
-    // 设置markdown
+
     Markdown.Extra.init(converter, {
         extensions  :   ["tables", "fenced_code_gfm", "def_list", "attr_list", "footnotes"]
     });
 
-    // 自动跟随
+
     converter.hooks.chain('postConversion', function (html) {
-        // clear special html tags
+
         html = html.replace(/<\/?(\!doctype|html|head|body|link|title|input|select|button|textarea|style|noscript)[^>]*>/ig, function (all) {
             return all.replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
@@ -177,8 +177,8 @@ function markdown(textarea, toolbar, preview) {
 
     editor.run();
 
-    // 编辑预览切换
-    var edittab = $('#md-button-bar').prepend('<div class="md-edittab"><a href="#md-editarea" class="active">撰写</a><a href="#md-preview">预览</a></div>'),
+
+    var edittab = $('#md-button-bar').prepend('<div class="md-edittab"><a href="#md-editarea" class="active">Write</a><a href="#md-preview">Preview</a></div>'),
         editarea = $(textarea.parent()).attr("id", "md-editarea");
 
     $(".md-edittab a").click(function() {
@@ -189,14 +189,14 @@ function markdown(textarea, toolbar, preview) {
         var selected_tab = $(this).attr("href"),
             selected_el = $(selected_tab).removeClass("md-hidetab");
 
-        // 预览时隐藏编辑器按钮
+
         if (selected_tab == "#md-preview") {
             $("#md-button-row").addClass("md-visualhide");
         } else {
             $("#md-button-row").removeClass("md-visualhide");
         }
 
-        // 预览和编辑窗口高度一致
+
         $("#md-preview").outerHeight($("#md-editarea").innerHeight());
 
         return false;

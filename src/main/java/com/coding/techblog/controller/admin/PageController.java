@@ -2,7 +2,6 @@ package com.coding.techblog.controller.admin;
 
 import com.coding.techblog.constant.WebConst;
 import com.coding.techblog.controller.BaseController;
-import com.coding.techblog.dto.LogActions;
 import com.coding.techblog.dto.Types;
 import com.coding.techblog.exception.TipException;
 import com.coding.techblog.modal.Bo.RestResponseBo;
@@ -10,7 +9,6 @@ import com.coding.techblog.modal.Vo.ContentVo;
 import com.coding.techblog.modal.Vo.ContentVoExample;
 import com.coding.techblog.modal.Vo.UserVo;
 import com.coding.techblog.service.IContentService;
-import com.coding.techblog.service.ILogService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +28,6 @@ public class PageController extends BaseController {
     @Resource
     private IContentService contentsService;
 
-    @Resource
-    private ILogService logService;
 
     @GetMapping(value = "")
     public String index(HttpServletRequest request) {
@@ -134,7 +130,6 @@ public class PageController extends BaseController {
     public RestResponseBo delete(@RequestParam int cid, HttpServletRequest request) {
         try {
             contentsService.deleteByCid(cid);
-            logService.insertLog(LogActions.DEL_PAGE.getAction(), cid + "", request.getRemoteAddr(), this.getUid(request));
         } catch (Exception e) {
             String msg = "Xóa trang không thành công ";
             if (e instanceof TipException) {

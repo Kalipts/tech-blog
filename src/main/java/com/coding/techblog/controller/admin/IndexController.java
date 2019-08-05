@@ -3,18 +3,14 @@ package com.coding.techblog.controller.admin;
 
 import com.coding.techblog.constant.WebConst;
 import com.coding.techblog.controller.BaseController;
-import com.coding.techblog.dto.LogActions;
 import com.coding.techblog.exception.TipException;
 import com.coding.techblog.modal.Bo.RestResponseBo;
 import com.coding.techblog.modal.Bo.StatisticsBo;
 import com.coding.techblog.modal.Vo.CommentVo;
 import com.coding.techblog.modal.Vo.ContentVo;
-import com.coding.techblog.modal.Vo.LogVo;
 import com.coding.techblog.modal.Vo.UserVo;
-import com.coding.techblog.service.ILogService;
 import com.coding.techblog.service.ISiteService;
 import com.coding.techblog.service.IUserService;
-import com.coding.techblog.utils.GsonUtils;
 import com.coding.techblog.utils.TaleUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -38,26 +34,24 @@ public class IndexController extends BaseController {
     @Resource
     private ISiteService siteService;
 
-    @Resource
-    private ILogService logService;
 
     @Resource
     private IUserService userService;
 
     @GetMapping(value = {"","/index"})
     public String index(HttpServletRequest request){
-        LOGGER.info("Enter admin index method");
+        LOGGER.info("Enter admin-assets index method");
         List<CommentVo> comments = siteService.recentComments(5);
         List<ContentVo> contents = siteService.recentContents(5);
         StatisticsBo statistics = siteService.getStatistics();
 
-        List<LogVo> logs = logService.getLogs(1, 5);
+
 
         request.setAttribute("comments", comments);
         request.setAttribute("articles", contents);
         request.setAttribute("statistics", statistics);
-        request.setAttribute("logs", logs);
-        LOGGER.info("Exit admin index method");
+
+        LOGGER.info("Exit admin-assets index method");
         return "admin/index";
     }
 
@@ -75,10 +69,6 @@ public class IndexController extends BaseController {
     }
 
 
-    @GetMapping(value = "/test")
-    public String test() {
-        return "admin/test";
-    }
 
     @PostMapping(value = "/profile")
     @ResponseBody
@@ -92,7 +82,6 @@ public class IndexController extends BaseController {
             temp.setScreenName(screenName);
             temp.setEmail(email);
             userService.updateByUid(temp);
-            logService.insertLog(LogActions.UP_INFO.getAction(), GsonUtils.toJsonString(temp), request.getRemoteAddr(), this.getUid(request));
 
             UserVo original = (UserVo) session.getAttribute(WebConst.LOGIN_SESSION_KEY);
             original.setScreenName(screenName);
@@ -124,7 +113,6 @@ public class IndexController extends BaseController {
             String pwd = TaleUtils.MD5encode(users.getUsername() + password);
             temp.setPassword(pwd);
             userService.updateByUid(temp);
-            logService.insertLog(LogActions.UP_PWD.getAction(), null, request.getRemoteAddr(), this.getUid(request));
 
 
             UserVo original= (UserVo)session.getAttribute(WebConst.LOGIN_SESSION_KEY);

@@ -2,7 +2,7 @@ package com.coding.techblog.controller;
 
 
 import com.coding.techblog.modal.Vo.UserVo;
-import com.coding.techblog.utils.MapCache;
+
 import com.coding.techblog.utils.TaleUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +12,6 @@ public abstract class BaseController {
 
     public static String THEME = "themes/default";
 
-    protected MapCache cache = MapCache.single();
 
 
     public String render(String viewName) {

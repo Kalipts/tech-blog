@@ -1,23 +1,16 @@
 package com.coding.techblog.service.impl;
 
 import com.coding.techblog.constant.WebConst;
-import com.coding.techblog.controller.admin.AttachController;
 import com.coding.techblog.dao.AttachVoMapper;
 import com.coding.techblog.dao.CommentVoMapper;
 import com.coding.techblog.dao.ContentVoMapper;
 import com.coding.techblog.dao.MetaVoMapper;
 import com.coding.techblog.dto.MetaDto;
 import com.coding.techblog.dto.Types;
-import com.coding.techblog.exception.TipException;
-import com.coding.techblog.modal.Bo.ArchiveBo;
-import com.coding.techblog.modal.Bo.BackResponseBo;
 import com.coding.techblog.modal.Bo.StatisticsBo;
 import com.coding.techblog.modal.Vo.*;
 import com.coding.techblog.service.ISiteService;
-import com.coding.techblog.utils.DateKit;
-import com.coding.techblog.utils.TaleUtils;
-import com.coding.techblog.utils.ZipUtils;
-import com.coding.techblog.utils.backup.Backup;
+
 import com.github.pagehelper.PageHelper;
 
 import org.apache.commons.lang3.StringUtils;
@@ -79,68 +72,7 @@ public class SiteServiceImpl implements ISiteService {
         return list;
     }
 
-    @Override
-    public BackResponseBo backup(String bk_type, String bk_path, String fmt) throws Exception {
-        BackResponseBo backResponse = new BackResponseBo();
-        if (bk_type.equals("attach")) {
-            if (StringUtils.isBlank(bk_path)) {
-                throw new TipException("Vui lòng nhập đường dẫn tệp sao lưu");
-            }
-            if (!(new File(bk_path)).isDirectory()) {
-                throw new TipException("Vui lòng nhập đường dẫn thư mục");
-            }
-            String bkAttachDir = AttachController.CLASSPATH + "upload";
-            String bkThemesDir = AttachController.CLASSPATH + "templates/themes";
 
-            String fname = DateKit.dateFormat(new Date(), fmt) + "_" + TaleUtils.getRandomNumber(5) + ".zip";
-
-            String attachPath = bk_path + "/" + "attachs_" + fname;
-            String themesPath = bk_path + "/" + "themes_" + fname;
-
-            ZipUtils.zipFolder(bkAttachDir, attachPath);
-            ZipUtils.zipFolder(bkThemesDir, themesPath);
-
-            backResponse.setAttachPath(attachPath);
-            backResponse.setThemePath(themesPath);
-        }
-        if (bk_type.equals("db")) {
-
-            String bkAttachDir = AttachController.CLASSPATH + "upload/";
-            if (!(new File(bkAttachDir)).isDirectory()) {
-                File file = new File(bkAttachDir);
-                if (!file.exists()) {
-                    file.mkdirs();
-                }
-            }
-            String sqlFileName = "tale_" + DateKit.dateFormat(new Date(), fmt) + "_" + TaleUtils.getRandomNumber(5) + ".sql";
-            String zipFile = sqlFileName.replace(".sql", ".zip");
-
-            Backup backup = new Backup(TaleUtils.getNewDataSource().getConnection());
-            String sqlContent = backup.execute();
-
-            File sqlFile = new File(bkAttachDir + sqlFileName);
-            write(sqlContent, sqlFile, Charset.forName("UTF-8"));
-
-            String zip = bkAttachDir + zipFile;
-            ZipUtils.zipFile(sqlFile.getPath(), zip);
-
-            if (!sqlFile.exists()) {
-                throw new TipException("Sao lưu cơ sở dữ liệu không thành công");
-            }
-            sqlFile.delete();
-
-            backResponse.setSqlPath(zipFile);
-
-
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    new File(zip).delete();
-                }
-            }, 10 * 1000);
-        }
-        return backResponse;
-    }
 
     @Override
     public CommentVo getComment(Integer coid) {
@@ -175,28 +107,6 @@ public class SiteServiceImpl implements ISiteService {
         return statistics;
     }
 
-    @Override
-    public List<ArchiveBo> getArchives() {
-        LOGGER.debug("Enter getArchives method");
-        List<ArchiveBo> archives = contentDao.findReturnArchiveBo();
-        if (null != archives) {
-            archives.forEach(archive -> {
-                ContentVoExample example = new ContentVoExample();
-                ContentVoExample.Criteria criteria = example.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType());
-                example.setOrderByClause("created desc");
-                String date = archive.getDate();
-                Date sd = DateKit.dateFormat(date, "yyyythangMMnam");
-                int start = DateKit.getUnixTimeByDate(sd);
-                int end = DateKit.getUnixTimeByDate(DateKit.dateAdd(DateKit.INTERVAL_MONTH, sd, 1)) - 1;
-                criteria.andCreatedGreaterThan(start);
-                criteria.andCreatedLessThan(end);
-                List<ContentVo> contentss = contentDao.selectByExample(example);
-                archive.setArticles(contentss);
-            });
-        }
-        LOGGER.debug("Exit getArchives method");
-        return archives;
-    }
 
     @Override
     public List<MetaDto> metas(String type, String orderBy, int limit){

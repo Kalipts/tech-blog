@@ -21,6 +21,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     }
 
 
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/upload/**").addResourceLocations("file:"+ TaleUtils.getUplodFilePath()+"upload/");
