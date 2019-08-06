@@ -30,7 +30,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("admin/attach")
+@RequestMapping("super/attach")
 public class AttachController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AttachController.class);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='页面管理',active='page'">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='Page list',active='page'">
 <header th:replace="admin/header::headerFragment(${title},${active})"></header>
 <body class="fixed-left">
 <div id="wrapper">
@@ -65,7 +65,7 @@
             title:'Are you sure?',
             then: function () {
                 tale.post({
-                    url : '/admin/page/delete',
+                    url : '/super/page/delete',
                     data: {cid: cid},
                     success: function (result) {
                         if(result && result.success){

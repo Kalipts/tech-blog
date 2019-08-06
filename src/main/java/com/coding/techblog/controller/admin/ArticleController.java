@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/article")
+@RequestMapping("/super/article")
 @Transactional(rollbackFor = TipException.class)
 public class ArticleController extends BaseController {
 

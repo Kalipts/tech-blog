@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="headerFragment(title,active)">
     <meta charset="utf-8"/>
-    <title><th:block th:text="${title!=null?title:'博客后台'}+'- My Blog'"></th:block></title>
+    <title><th:block th:text="${title!=null?title:'Default'}+''"></th:block></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta content="Coderthemes" name="author"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <link rel="shortcut icon" th:href="@{/admin-assets/images/favicon.png}"/>
+    <link rel="shortcut icon" href="https://img.icons8.com/officel/500/000000/nfc-n.png"/>
     <link th:href="@{//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css}" rel="stylesheet"/>
     <link th:href="@{/admin-assets/css/style.min.css}" rel="stylesheet" type="text/css"/>
@@ -24,12 +24,12 @@
     <div class="topbar-left">
         <div class="text-center p-t-10" style="margin: 0 auto;">
             <div class="pull-left" style="padding-left: 10px;">
-                <a th:href="@{/admin/index}">
-                    <img th:src="@{/admin-assets/images/logo.jpg}" width="50" height="50"/>
+                <a th:href="@{/super/index}">
+                    <img th:src="@{/user/img/linux.svg}" width="50" height="50"/>
                 </a>
             </div>
             <div class="pull-left" style="padding-left: 10px;">
-                <span style="font-size: 28px; color: #2f353f; line-height: 50px;">My Blog</span>
+                <span style="font-size: 28px; color: #2f353f; line-height: 50px;">Super User</span>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
                            aria-expanded="true"><img th:src="${commons.gravatar(session.login_user.email)}" alt="user-img"
                                                      class="img-circle"/> </a>
                         <ul class="dropdown-menu">
-                            <li><a th:href="@{/admin/profile}"><i class="fa fa-user-circle"></i> Profile</a></li>
+                            <li><a th:href="@{/super/profile}"><i class="fa fa-user-circle"></i> Profile</a></li>
                             <li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i> Logout</a></li>
                         </ul>
                     </li>
@@ -63,36 +63,36 @@
         <div id="sidebar-menu">
             <ul>
                 <li th:class="${active}=='home'?'active':''">
-                    <a th:href="@{/admin/index}"
+                    <a th:href="@{/super/index}"
                        th:class="${active}=='home'?'waves-effect active':'waves-effect'"><i
                             class="fa fa-dashboard" aria-hidden="true"></i><span> Dashboard </span></a>
                 </li>
                 <li th:class="${active}=='publish'?'active':''">
-                    <a th:href="@{/admin/article/publish}"
+                    <a th:href="@{/super/article/publish}"
                        th:class="${active}=='publish'?'waves-effect active':'waves-effect'"><i
                             class="fa fa-pencil-square-o" aria-hidden="true"></i><span> Post Artcile </span></a>
                 </li>
                 <li th:class="${active}=='article'?'active':''">
-                    <a th:href="@{/admin/article}"
+                    <a th:href="@{/super/article}"
                        th:class="${active}=='article'?'waves-effect active':'waves-effect'"><i
                             class="fa fa-list" aria-hidden="true"></i><span> Article Management </span></a>
                 </li>
                 <li th:class="${active}=='page'?'active':''">
-                    <a th:href="@{/admin/page}" th:class="${active}=='page'?'waves-effect active':'waves-effect'"><i
+                    <a th:href="@{/super/page}" th:class="${active}=='page'?'waves-effect active':'waves-effect'"><i
                             class="fa fa-file-text" aria-hidden="true"></i><span> About </span></a>
                 </li>
                 <li th:class="${active}=='comments'?'active':''">
-                    <a th:href="@{/admin/comments}"
+                    <a th:href="@{/super/comments}"
                        th:class="${active}=='comments'?'waves-effect active':'waves-effect'"><i
                             class="fa fa-comments" aria-hidden="true"></i><span> Comment </span></a>
                 </li>
                 <li th:class="${active}=='category'?'active':''">
-                    <a th:href="@{/admin/category}"
+                    <a th:href="@{/super/category}"
                        th:class="${active}=='category'?'waves-effect active':'waves-effect'"><i
                             class="fa fa-tags" aria-hidden="true"></i><span> Tags </span></a>
                 </li>
                 <li th:class="${active}=='attach'?'active':''">
-                    <a th:href="@{/admin/attach}"
+                    <a th:href="@{/super/attach}"
                        th:class="${active}=='attach'?'waves-effect active':'waves-effect'"><i
                             class="fa fa-cloud-upload" aria-hidden="true"></i><span> Upload </span></a>
                 </li>

@@ -48,7 +48,7 @@ public final class Commons {
 
 
     public static String site_login() {
-        return "admin-assets/login";
+        return "admin/login";
     }
 
 

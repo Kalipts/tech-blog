@@ -20,7 +20,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("admin/category")
+@RequestMapping("super/category")
 public class CategoryController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);

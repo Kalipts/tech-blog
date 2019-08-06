@@ -26,7 +26,7 @@ import java.util.List;
 
 
 @Controller("adminIndexController")
-@RequestMapping("/admin")
+@RequestMapping("/super")
 @Transactional(rollbackFor = TipException.class)
 public class IndexController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);

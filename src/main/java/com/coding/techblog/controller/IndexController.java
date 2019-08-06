@@ -12,6 +12,7 @@ import com.coding.techblog.modal.Vo.MetaVo;
 import com.coding.techblog.service.ICommentService;
 import com.coding.techblog.service.IContentService;
 import com.coding.techblog.service.IMetaService;
+import com.coding.techblog.utils.Commons;
 import com.coding.techblog.utils.PatternKit;
 import com.coding.techblog.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
@@ -63,8 +64,10 @@ public class IndexController extends BaseController {
 
         request.setAttribute("articles", articles);
         if (p > 1) {
-            this.title(request, "nha" + p + "phan");
+
         }
+
+        request.setAttribute("post_title", "Nha's Blog");
 
         return this.render("index");
     }
@@ -82,7 +85,12 @@ public class IndexController extends BaseController {
 
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
+        request.setAttribute("post_title", contents.getTitle());
+        request.setAttribute("post_keywords",contents.getContent());
+        request.setAttribute("post_description",contents.getContent());
+
         completeArticle(request, contents);
+        System.out.println("xin chao" + Commons.site_option("df adfa dsf asdf asdf", " "));
         return this.render("post");
     }
 

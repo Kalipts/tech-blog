@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller()
-@RequestMapping("admin/page")
+@RequestMapping("super/page")
 public class PageController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PageController.class);

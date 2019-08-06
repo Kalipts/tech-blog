@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/super")
 @Transactional(rollbackFor = TipException.class)
 public class AuthController extends BaseController {
 

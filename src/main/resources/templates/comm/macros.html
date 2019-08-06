@@ -24,7 +24,7 @@
         <ul class="pagination m-b-5 pull-right">
             <li th:if="${pageInfo.hasPreviousPage}">
                 <a th:href="@{page=${pageInfo.prePage}}" aria-label="Previous">
-                    <i class="fa fa-angle-left"></i>&nbsp;上一页
+                    <i class="fa fa-angle-left"></i>&nbsp;
                 </a>
             </li>
 
@@ -36,12 +36,12 @@
             <th:block th:if="${pageInfo.hasNextPage}">
                 <li>
                     <a th:href="@{'?page='+${pageInfo.nextPage}}" aria-label="Next">
-                        下一页&nbsp;<i class="fa fa-angle-right"></i>
+                       &nbsp;<i class="fa fa-angle-right"></i>
                     </a>
                 </li>
             </th:block>
 
-            <li><span th:text="'共'+${pageInfo.pages}+'页'"></span></li>
+            <li><span th:text="${pageInfo.pages}"></span></li>
         </ul>
     </div>
 </div>

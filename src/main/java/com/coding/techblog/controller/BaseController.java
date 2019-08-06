@@ -18,15 +18,7 @@ public abstract class BaseController {
         return THEME + "/" + viewName;
     }
 
-    public BaseController title(HttpServletRequest request, String title) {
-        request.setAttribute("title", title);
-        return this;
-    }
 
-    public BaseController keywords(HttpServletRequest request, String keywords) {
-        request.setAttribute("keywords", keywords);
-        return this;
-    }
 
 
 
@@ -34,9 +26,6 @@ public abstract class BaseController {
         return TaleUtils.getLoginUser(request);
     }
 
-    public Integer getUid(HttpServletRequest request){
-        return this.user(request).getUid();
-    }
 
     public String render_404() {
         return "comm/error_404";

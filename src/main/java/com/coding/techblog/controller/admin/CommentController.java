@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
-@RequestMapping("admin/comments")
+@RequestMapping("super/comments")
 public class CommentController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
